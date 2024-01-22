@@ -1,0 +1,26 @@
+version: '3.1'
+
+services:
+  db:
+    image: postgres
+    container_name: postgreSQL_database
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:?err}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?err}
+    volumes:
+     -  dbdata:/var/lib/postgreSQL
+     - ./dump:/docker-entrypoint-initdb.d
+
+  adminer:
+    image: adminer
+    container_name: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    links:
+      - db
+volumes:
+  dbdata:
